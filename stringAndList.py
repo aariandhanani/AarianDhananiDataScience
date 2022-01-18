@@ -61,9 +61,10 @@ while (play == 1):
             for j in range(0,(i+1)):
                 print("x", end = "")
             print()
+    elif (sizeValue == -1):
+        break
     else:
         print("Invalid size. Please enter a size between 1 and 25.")
-        break
     sizeValue = 0
 
 print("Thanks for playing.")
