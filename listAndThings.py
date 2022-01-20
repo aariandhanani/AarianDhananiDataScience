@@ -12,3 +12,9 @@ for elem in fruits:
 
 myList = list((3,5,6))
 print(myList)
+
+fruits.append("kiwi")
+fruits.insert(3, 'grapes')
+
+fruits.append(myList)
+print(fruits)
