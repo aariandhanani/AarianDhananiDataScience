@@ -62,7 +62,7 @@ print(list1)
 #Problem 6
 list1 = ["a", "b", ["c", ["d", "e", ["f", "g"], "k"], "l"], "m", "n"]
 #list1[2][1].append(["h", "i", "j"])
-list1[2][1][2].insert(1, ["h", "i", "j"])
+list1[2][1][2].extend(["h", "i", "j"])
 print(list1)
 
 
