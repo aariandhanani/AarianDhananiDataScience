@@ -7,8 +7,16 @@
 # Choice:
 
 #Create word lists
-import os, random, json
+import os, random, json, requests
+#import urllib
+from urllib.request import urlopen
 os.system('clear')
+
+request1 = requests.get('https://raw.githubusercontent.com/matthewreagan/WebstersEnglishDictionary/master/dictionary_compact.json')
+words = request1.json()
+
+
+
 word=""
 guess=""
 def selectWord():
@@ -37,14 +45,11 @@ def guessFunction():
             print("only one letter please")
 
 
-APIImport = requests.get('https://raw.githubusercontent.com/matthewreagan/WebstersEnglishDictionary/master/dictionary_compact.json')
-print(APIImport)
 gameOn=True
 tries=0
 letterGuessed=""
 selectWord()
 while gameOn:
-   
     guessFunction()
     letterGuessed += guess  #letterGuessed=letterGuessed + guess
     if guess not in word:
