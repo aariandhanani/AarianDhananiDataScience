@@ -1,71 +1,133 @@
 # Aarian Dhanani from Maria Suarez
-# 02/08/2022
-# Word game with 3 levels:
-#        1. Fruits    
-#        2. Animals
-#        3. Computer Parts    
-# Choice:
+# 02/23/2022
+# Word Game
 
-#Create word lists
-import os, random, json, requests
-#import urllib
-from urllib.request import urlopen
+import os, random, json, requests, sys, datetime
 os.system('clear')
 
+#Get the json
 request1 = requests.get('https://raw.githubusercontent.com/matthewreagan/WebstersEnglishDictionary/master/dictionary_compact.json')
 words = request1.json()
+wordChoices = words.keys()
 
+#Define variables
+global word
+gameOn = True
+tries = 0
+letterGuessed = ""
+wordSelection = ""
+difficultyDone = 0
+difficultyChoice = ""
+guess = ""
+global playAgainOrNo
+score = 0
 
+#Ask for the username
+global username
+username = input("What is your username? ")
 
-word=""
-guess=""
-def selectWord():
-    global word
-    fruits=["bananas", "grapes", "waterMelon", 'blueberries', 'apples', "blackberries",
-    "papaya", 'oranges', 'tomatoes', 'mangos', 'kiwis','strawberries' ]
-
-    # size= len(fruits)
-    # randy= random.randint(0,size)
-    # print(randy)
-    # word=fruits[randy]
-    # print(word)+
-    word=random.choice(fruits)
-
+#Guess function that can be called
 def guessFunction():
     global guess
-    check=True
+    check = True
     while check:
         try:
-            guess=input("\nenter a letter to guess the word ")
+            guess = input("Enter a letter to guess the word: ")
             if guess.isalpha() and len(guess)==1:
-                check=False
+                check = False
             else:
-                print("only one letter please")
+                print("Please only enter one letter: ")
         except ValueError:
-            print("only one letter please")
+            print("Please only enter one letter: ")
 
+#Play again class
+def playGame():
+    playAgainOrNo = input("Enter y to play again or any other letter to quit: ")
+    return playAgainOrNo
 
-gameOn=True
-tries=0
-letterGuessed=""
-selectWord()
+#Main game loop
 while gameOn:
+    # print(difficultyDone) For testing purposes
+    #Getting the difficulty
+    while (difficultyDone != 1):
+        difficultyChoice = input("Please select a difficulty level from 3-5: ")
+        wordLength = []
+        if difficultyChoice == '3':
+            for i in wordChoices:
+                if len(i) == 3:
+                    wordLength.append(i)
+            wordSelection = random.randint(0,len(wordLength))
+            wordWord = wordLength[wordSelection]
+            difficultyDone = 1
+        elif difficultyChoice == '4':
+            for i in wordChoices:
+                if len(i) == 4:
+                    wordLength.append(i)
+            wordSelection = random.randint(0,len(wordLength))
+            wordWord = wordLength[wordSelection]
+            difficultyDone = 1
+        elif difficultyChoice == '5':
+            for i in wordChoices:
+                if len(i) == 5:
+                    wordLength.append(i)
+            wordSelection = random.randint(0,len(wordLength))
+            wordWord = wordLength[wordSelection]
+            difficultyDone = 1
+        else:
+            print("Please enter one of these difficulty levels: 3, 4, or 5")
+
+    print(wordWord)
     guessFunction()
+    # print(guess)
     letterGuessed += guess  #letterGuessed=letterGuessed + guess
-    if guess not in word:
+    #Check if the letter is in the word
+    if guess not in wordWord:
         tries +=1
-        print(tries)# for testing delete when game is ready
-    countLetter=0
-    for letter in word:
+        # print(tries)# for testing delete when game is ready
+    countLetter = 0
+    for letter in wordWord:
         if letter in letterGuessed:
             print(letter, end=" ")
-            countLetter +=1
+            countLetter += 1
         else:
             print("_", end=" ")
-    if tries >6:
-        print("\n Sorry run out chances ")
-        #playGame() ask if they want to play again
-    if countLetter == len(word):
-        print ("\nyou guessed! ")
-        #Calculate score
-        #playGame()
+    #Loser if statement
+    if tries > 6:
+        print("You're out of chances.")
+        playAgainOrNo = playGame()
+        if playAgainOrNo == "y":
+            gameOn = True
+            tries = 0
+            letterGuessed = ""
+            wordSelection = ""
+            difficultyDone = 0
+            difficultyChoice = ""
+            guess = ""
+            wordWord = ""
+            score = 0
+        else:
+            gameOn = False
+            sys.exit()
+    #Winner if statement
+    if countLetter == len(wordWord):
+        print ("You guessed the word!")
+        score = 6 - tries
+        date = datetime.datetime.now()
+        scoreReport = "Username: " + username + ". Date: " + str(date) + ". Score: " + str(score) + "\n"
+        print(scoreReport)
+        with open('/Users/aariandhanani/Desktop/AarianDhananiDataScience/scoreFile.json', 'a') as f:
+            json.dump(scoreReport, f)
+        playAgainOrNo = playGame()
+        if playAgainOrNo == "y":
+            gameOn = True
+            tries = 0
+            letterGuessed = ""
+            wordSelection = ""
+            difficultyDone = 0
+            difficultyChoice = ""
+            guess = ""
+            wordWord = ""
+            score = 0
+        else:
+            gameOn = False
+            sys.exit()
