@@ -7,7 +7,7 @@ data = {'name': ['Aarian', 'Peter'],
 'age': [18,20]}
 
 df = pd.DataFrame(data)
-print(df)
+#print(df)
 
 listBig = [["Peter", 20],["Sherry", 12],["Chris", 40]]
 df1 = pd.DataFrame(listBig, columns=["name","age"])
@@ -16,6 +16,7 @@ print(df1)
 
 #Reading from csv file
 
-df3 = pd.read_csv("insurance_data.csv")
-
-print(df3)
+dfInsurance = pd.read_csv("insurance_data.csv")
+#print(df3)
+df2 = dfInsurance[(dfInsurance['age'] > 20) & (dfInsurance['smoker']=='yes')]
+print(df2)
