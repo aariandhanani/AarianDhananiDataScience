@@ -1,5 +1,5 @@
 import pandas as pd
-import os
+import os, csv
 os.system('clear')
 
 #Problem 1
@@ -26,6 +26,10 @@ print(df1)
 
 #Problem 3
 dfInsurance = pd.read_csv("insurance_data.csv")
+dfInsurance["sex"].replace({"female":0,"male":1}, inplace=True)
+dfInsurance["smoker"].replace({"no":0,"yes":1}, inplace=True)
+dfInsurance["insurance cost"] = ((dfInsurance['age'])*250) - ((dfInsurance['sex'])*128) + ((dfInsurance['bmi'])*370) + ((dfInsurance['children'])*425) + ((dfInsurance['smoker'])*24000) - 12500
 print(dfInsurance)
-dfInsurance["cost"] = ((float(dfInsurance['age']))*250) - ((dfInsurance['sex'])*250)
-dfInsurance["cost"] = (250 * age) - (128 * sex) + (370 * bmi) + (425 * num_of_children) + (24000 * smoker) - 12500
+
+#Problem 4
+df1.to_csv("df1.csv")
